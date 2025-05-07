@@ -186,8 +186,6 @@ async function getJsonValues(json) {
             )
         );
 
-        // FIXME: textureFileListに材質とオプションの設定内容が混入する問題を修正する必要
-
         if (trainFiles) {
             modelFileList.add(trainFiles.model);
             trainFiles.textures.forEach((texture) => {

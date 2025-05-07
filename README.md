@@ -77,7 +77,7 @@ JSON:addon/your_addon/mods/RTM/train/ModelTrain_your_train_2.jsonで、座席設
 - 検証対象のZIPファイルは、正しいディレクトリ構造である必要があります。
 
 ## ライセンス
-このプロジェクトは [MIT LICENSE](LICENSE.txt) の下で公開されています。
+このプロジェクトは [MIT LICENSE](LICENSE) の下で公開されています。
 
 ## 貢献
 バグ報告や機能提案は、Issueを通じて受け付けています。プルリクエストも歓迎します。

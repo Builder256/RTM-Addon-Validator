@@ -6,9 +6,9 @@
     "test": "node ./index.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Builder",
+  "license": "MIT",
+  "description": "validate realtrainmod train addon",
   "dependencies": {
     "iconv-lite": "^0.6.3",
     "unzipper": "^0.12.3"

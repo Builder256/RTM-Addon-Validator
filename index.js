@@ -8,7 +8,6 @@
 const path = require('path');
 const unzipper = require('unzipper');
 const iconv = require('iconv-lite');
-const { text } = require('stream/consumers');
 
 const TARGET_DIR = './addon/';
 const TARGET_FILE = '[RTM]kj_8800k.zip';
@@ -151,6 +150,7 @@ async function getJsonValues(json) {
 (async () => {
     const tree = await buildZipTree(path.join(TARGET_DIR, TARGET_FILE));
     const allZipPaths = new Set();
+    // console.log(JSON.stringify(tree, null, 2)); // デバッグ用にツリー構造を表示
 
     // 発生したエラーを格納する配列
     const errorMessages = [];
@@ -158,6 +158,7 @@ async function getJsonValues(json) {
     // 全ファイルのパスを取得
     const allFiles = findFiles(tree, () => true);
     allFiles.forEach((file) => allZipPaths.add(file.path));
+    console.log(allZipPaths);
 
     const trainJsons = findFiles(tree, (name) => /^ModelTrain_.*\.json$/i.test(name)); // ModelTrain_で始まるJSONファイルを取得
     if (trainJsons.length === 0) {
@@ -178,13 +179,13 @@ async function getJsonValues(json) {
         const { trainFiles, bogieFiles, buttonTexture, rollsignTexture, serverScriptPath, soundScriptPath, seatPos, slotPos, seatPosF } = values;
 
         console.log(`JSON:${json.path}の解析が完了しました。`);
-        console.log(
-            JSON.stringify(
-                trainFiles.textures.map((texture) => texture[1]),
-                null,
-                2
-            )
-        );
+        // console.log(
+        //     JSON.stringify(
+        //         trainFiles.textures.map((texture) => texture[1]),
+        //         null,
+        //         2
+        //     )
+        // );
 
         if (trainFiles) {
             modelFileList.add(trainFiles.model);
@@ -237,9 +238,22 @@ async function getJsonValues(json) {
         }
     }
 
-    console.log('Model Files:\n\t', Array.from(modelFileList).join(', \n\t'), '\n');
-    console.log('Texture Files:\n\t', Array.from(textureFileList).join(', \n\t'), '\n');
-    console.log('Script Files:\n\t', Array.from(scriptFileList).join(', \n\t'), '\n');
+    // console.log('Model Files:\n\t', Array.from(modelFileList).join(', \n\t'), '\n');
+    // console.log('Texture Files:\n\t', Array.from(textureFileList).join(', \n\t'), '\n');
+    // console.log('Script Files:\n\t', Array.from(scriptFileList).join(', \n\t'), '\n');
+
+    // 取得したファイルが実際に存在するか確認する
+    const checkFileExist = (filePath) => {
+        if (!allZipPaths.has(filePath)) {
+            errorMessages.push(`ファイル:${filePath}がZIP内に存在しません。`);
+        }
+    };
+
+    modelFileList.forEach((file) => checkFileExist('assets/minecraft/models/' + file));
+    textureFileList.forEach((file) => checkFileExist('assets/minecraft/' + file));
+    scriptFileList.forEach((file) => checkFileExist('assets/minecraft/' + file));
+    console.info('全てのファイルの存在確認が完了しました。');
+
     if (errorMessages.length === 0) {
         console.log('全てのJSONファイルの解析が完了しました。問題はありません。');
     } else {

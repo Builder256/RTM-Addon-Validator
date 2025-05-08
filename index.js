@@ -3,7 +3,6 @@
  * @file index.js
  * @author Builder
  */
-
 // const fs = require('fs');
 const path = require('path');
 const unzipper = require('unzipper');
@@ -144,6 +143,7 @@ async function getJsonValues(json) {
         seatPosF,
     };
 }
+
 /**
  * Main function to process the ZIP file and validate its contents.
  */

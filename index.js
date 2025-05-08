@@ -150,7 +150,7 @@ async function getJsonValues(json) {
 (async () => {
     const tree = await buildZipTree(path.join(TARGET_DIR, TARGET_FILE));
     const allZipPaths = new Set();
-    // console.log(JSON.stringify(tree, null, 2)); // デバッグ用にツリー構造を表示
+    // console.log(JSON.stringify(tree, null, 2));
 
     // 発生したエラーを格納する配列
     const errorMessages = [];
@@ -158,7 +158,7 @@ async function getJsonValues(json) {
     // 全ファイルのパスを取得
     const allFiles = findFiles(tree, () => true);
     allFiles.forEach((file) => allZipPaths.add(file.path));
-    console.log(allZipPaths);
+    // console.log(allZipPaths);
 
     const trainJsons = findFiles(tree, (name) => /^ModelTrain_.*\.json$/i.test(name)); // ModelTrain_で始まるJSONファイルを取得
     if (trainJsons.length === 0) {
@@ -258,7 +258,7 @@ async function getJsonValues(json) {
         console.log('全てのJSONファイルの解析が完了しました。問題はありません。');
     } else {
         console.log('エラーが発生しました。詳細は下記を確認してください。');
-        console.log(errorMessages.join('\n'));
+        console.error(errorMessages.join('\n'));
     }
 
     // 以下関数の使い方説明
